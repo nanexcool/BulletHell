@@ -99,6 +99,11 @@ namespace BulletHell
 
             player.Velocity = Vector2.Zero;
 
+            if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                Rectangle r = player.DrawRectangle;
+            }
+
             if (keyboardState.IsKeyDown(Keys.A))
             {
                 player.Velocity = new Vector2(-300, player.Velocity.Y);

@@ -86,6 +86,7 @@ namespace BulletHell.Engine
                         //position.X = oldPosition.X;
                         position.X = x1 * Tile.Size + Tile.Size;
                         velocity.X = 0;
+                        break;
                     }
                 }
             }
@@ -99,6 +100,7 @@ namespace BulletHell.Engine
                         //position.X = oldPosition.X;
                         position.X = x2 * Tile.Size - Width;
                         velocity.X = 0;
+                        break;
                     }
                 }
             }
@@ -113,6 +115,7 @@ namespace BulletHell.Engine
                         position.Y = y1 * Tile.Size + Tile.Size;
                         //position.Y = oldPosition.Y;
                         velocity.Y = 0;
+                        break;
                     }
                 }
             }
@@ -126,6 +129,7 @@ namespace BulletHell.Engine
                         position.Y = y2 * Tile.Size - Height;
                         //position.Y = oldPosition.Y;
                         velocity.Y = 0;
+                        break;
                     }
                 }
             }
