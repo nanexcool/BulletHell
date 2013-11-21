@@ -19,6 +19,8 @@ namespace BulletHell.Engine
 
         public List<Entity> Entities { get; set; }
 
+        private float enemyTimer = 0;
+
         public Level(int width, int height)
         {
             Width = width;
@@ -33,6 +35,10 @@ namespace BulletHell.Engine
                 {
                     Tiles[x + y * Width].Color = Color.White * Util.NextFloat();
                     if (x % Width == 0 || y % Height == 0 || x == Width -1 || y == Height - 1)
+                    {
+                        Tiles[x + y * Width].Color = Color.Red;
+                    }
+                    else if (Util.NextDouble() < 0.05)
                     {
                         Tiles[x + y * Width].Color = Color.Red;
                     }
@@ -59,12 +65,30 @@ namespace BulletHell.Engine
 
         public virtual void Update(float elapsed)
         {
-            Camera.Update(elapsed);
+            enemyTimer += elapsed;
+
+            if (enemyTimer > 5 && Util.NextDouble() < elapsed)
+            {
+                enemyTimer = 0;
+                Enemy e = new Enemy(Util.OctoTexture);
+                e.Color = Color.Brown;
+                e.Position = new Vector2(200, 100);
+                e.Target = Entities[0];
+                AddEntity(e);
+            }
 
             for (int i = 0; i < Entities.Count; i++)
             {
                 Entities[i].Update(elapsed);
+                
+                if (Entities[i].CanRemove)
+                {
+                    Entities.RemoveAt(i);
+                    i--;
+                }
             }
+
+            Camera.Update(elapsed);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

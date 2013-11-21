@@ -33,8 +33,8 @@ namespace BulletHell
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            //graphics.PreferredBackBufferWidth = 1280;
+            //graphics.PreferredBackBufferHeight = 720;
 
             IsMouseVisible = true;
         }
@@ -51,7 +51,7 @@ namespace BulletHell
 
             player = new Player(Content.Load<Texture2D>("Octocat"));
             
-            level = new Level(50, 50);
+            level = new Level(25, 20);
             level.AddEntity(player);
 
             player.Position = new Vector2(GraphicsDevice.Viewport.Width / 2 - player.Width / 2,
@@ -109,7 +109,7 @@ namespace BulletHell
 
             if (keyboardState.IsKeyDown(Keys.Space))
             {
-                camera.Shake(2, 2);
+                camera.Shake(5, 2);
             }
 
             if (keyboardState.IsKeyDown(Keys.A))
@@ -128,7 +128,7 @@ namespace BulletHell
             {
                 player.Velocity = new Vector2(player.Velocity.X, 300);
             }
-            
+
             level.Update(elapsed);
 
             base.Update(gameTime);

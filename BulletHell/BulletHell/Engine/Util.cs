@@ -11,6 +11,7 @@ namespace BulletHell.Engine
     public static class Util
     {
         public static Texture2D Texture;
+        public static Texture2D OctoTexture;
         public static SpriteFont Font;
 
         public static Random random;
@@ -21,8 +22,13 @@ namespace BulletHell.Engine
             Texture.SetData<Color>(new Color[] { Color.White });
 
             Font = game.Content.Load<SpriteFont>("Font");
-
+            OctoTexture = game.Content.Load<Texture2D>("Octocat");
             random = new Random();
+        }
+
+        public static double NextDouble()
+        {
+            return random.NextDouble();
         }
 
         public static float NextFloat()
