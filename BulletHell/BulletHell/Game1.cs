@@ -54,7 +54,7 @@ namespace BulletHell
             level = new Level(25, 20);
             level.AddEntity(player);
 
-            player.Position = new Vector2(GraphicsDevice.Viewport.Width / 2 - player.Width / 2,
+            player.Position = new Vector2(GraphicsDevice.Viewport.Width - player.Width / 2,
                 GraphicsDevice.Viewport.Height / 2 - player.Height / 2);
 
             camera = new Camera(this);

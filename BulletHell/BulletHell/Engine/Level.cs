@@ -34,6 +34,7 @@ namespace BulletHell.Engine
                 for (int x = 0; x < Width; x++)
                 {
                     Tiles[x + y * Width].Color = Color.White * Util.NextFloat();
+                    Tiles[x + y * Width].Color = Color.SaddleBrown;
                     if (x % Width == 0 || y % Height == 0 || x == Width -1 || y == Height - 1)
                     {
                         Tiles[x + y * Width].Color = Color.Red;
