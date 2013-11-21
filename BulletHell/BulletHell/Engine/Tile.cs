@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BulletHell.Engine
 {
-    public class Tile
+    public struct Tile
     {
         public static int Size = 64;
         public Color Color { get; set; }

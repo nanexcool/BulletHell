@@ -128,20 +128,7 @@ namespace BulletHell
             {
                 player.Velocity = new Vector2(player.Velocity.X, 300);
             }
-
-            if (mouseState.LeftButton == ButtonState.Pressed && oldmouseState.LeftButton == ButtonState.Released)
-            {
-                Tile t = level.GetTile(mouseState.X / Tile.Size, mouseState.Y / Tile.Size);
-                if (t.Color != Color.Red)
-                {
-                    t.SwapColor(Color.Red);
-                }
-                else
-                {
-                    t.SwapColor(t.PreviousColor);
-                }
-            }
-
+            
             level.Update(elapsed);
 
             base.Update(gameTime);

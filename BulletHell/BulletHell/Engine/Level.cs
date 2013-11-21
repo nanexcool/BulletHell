@@ -31,16 +31,11 @@ namespace BulletHell.Engine
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    Tiles[x + y * Width] = new Tile();
                     Tiles[x + y * Width].Color = Color.White * Util.NextFloat();
                     if (x % Width == 0 || y % Height == 0 || x == Width -1 || y == Height - 1)
                     {
-                        GetTile(x, y).Color = Color.Red;
+                        Tiles[x + y * Width].Color = Color.Red;
                     }
-                    //else
-                    //{
-                    //    GetTile(x, y).Color = Color.LawnGreen;
-                    //}
                 }
             }
 
