@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BulletHell.Engine
 {
-    class Tile
+    public class Tile
     {
-        public static int Size = 32;
+        public static int Size = 64;
         public Color Color { get; set; }
         public Color PreviousColor { get; set; }
 

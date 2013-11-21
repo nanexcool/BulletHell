@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BulletHell.Engine
 {
-    class Entity
+    public class Entity
     {
         protected Vector2 position;
         protected Vector2 velocity;
@@ -33,6 +33,9 @@ namespace BulletHell.Engine
         public int Width { get; set; }
         public int Height { get; set; }
 
+        public int XOffset { get; set; }
+        public int YOffset { get; set; }
+
         public Rectangle DrawRectangle
         {
             get
@@ -56,7 +59,12 @@ namespace BulletHell.Engine
 
         public virtual void Update(float elapsed)
         {
-            Move(elapsed);
+            if (velocity.X != 0 || velocity.Y != 0)
+            {
+                Move(elapsed);
+
+                position = Vector2.Clamp(position, Vector2.Zero, new Vector2(Level.Width * Tile.Size - Width, Level.Height * Tile.Size - Height));
+            }
         }
 
         private void Move(float elapsed)
@@ -64,8 +72,6 @@ namespace BulletHell.Engine
             oldPosition = position;
             
             position += velocity * elapsed;
-
-            position = Vector2.Clamp(position, Vector2.Zero, new Vector2(800 - Width, 480 - Height));
 
             Rectangle drawRect = DrawRectangle;
 
@@ -80,8 +86,7 @@ namespace BulletHell.Engine
             {
                 for (int y = y1; y <= y2; y++)
                 {
-                    t = Level.GetTile(x1, y);
-                    if (t.IsSolid())
+                    if (Level.GetTile(x1, y).IsSolid())
                     {
                         //position.X = oldPosition.X;
                         position.X = x1 * Tile.Size + Tile.Size;
@@ -138,19 +143,22 @@ namespace BulletHell.Engine
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             Rectangle drawRect = DrawRectangle;
+            
+            spriteBatch.Draw(Texture, new Vector2(position.X - XOffset, position.Y - YOffset), Color);
+            
+            //spriteBatch.Draw(Texture, drawRect, Color);
+            
+            //spriteBatch.Draw(Util.Texture, drawRect, Color.Blue * 0.5f);
 
-            //spriteBatch.Draw(Util.Texture, drawRect, Color.White);
-            spriteBatch.Draw(Texture, drawRect, Color);
+            //int x1 = X / Tile.Size;
+            //int x2 = (drawRect.Right - 1) / Tile.Size;
+            //int y1 = Y / Tile.Size;
+            //int y2 = (drawRect.Bottom - 1) / Tile.Size;
 
-            int x1 = X / Tile.Size;
-            int x2 = (drawRect.Right - 1) / Tile.Size;
-            int y1 = Y / Tile.Size;
-            int y2 = (drawRect.Bottom - 1) / Tile.Size;
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(string.Format("X:{0},{1} Y:{2},{3}", x1, x2, y1, y2));
-            sb.AppendLine(drawRect.ToString());
-            spriteBatch.DrawString(Util.Font, sb, new Vector2(drawRect.Left, drawRect.Bottom), Color.Blue);
+            //StringBuilder sb = new StringBuilder();
+            //sb.AppendLine(string.Format("X:{0},{1} Y:{2},{3}", x1, x2, y1, y2));
+            //sb.AppendLine(drawRect.ToString());
+            //spriteBatch.DrawString(Util.Font, sb, new Vector2(drawRect.Left, drawRect.Bottom), Color.Blue);
         }
     }
 }

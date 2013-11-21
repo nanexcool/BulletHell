@@ -13,7 +13,11 @@ namespace BulletHell.Engine
         public Player(Texture2D texture)
             : base(texture)
         {
+            Width = 48;
+            Height = 96;
 
+            XOffset = (texture.Width - Width) / 2;
+            YOffset = (texture.Height - Height) / 2;
         }
     }
 }

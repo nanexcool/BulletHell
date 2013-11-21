@@ -26,11 +26,15 @@ namespace BulletHell
 
         Level level;
         Player player;
+        Camera camera;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
 
             IsMouseVisible = true;
         }
@@ -46,14 +50,18 @@ namespace BulletHell
             Util.Initialize(this);
 
             player = new Player(Content.Load<Texture2D>("Octocat"));
-            player.Width = 48;
-            player.Height = 48;
-
-            level = new Level(25, 15);
+            
+            level = new Level(50, 50);
             level.AddEntity(player);
 
             player.Position = new Vector2(GraphicsDevice.Viewport.Width / 2 - player.Width / 2,
                 GraphicsDevice.Viewport.Height / 2 - player.Height / 2);
+
+            camera = new Camera(this);
+            camera.Focus = player;
+            camera.Bounds = new Rectangle(0, 0, level.Width * Tile.Size, level.Height * Tile.Size);
+
+            level.Camera = camera;
 
             base.Initialize();
         }
@@ -101,7 +109,7 @@ namespace BulletHell
 
             if (keyboardState.IsKeyDown(Keys.Space))
             {
-                Rectangle r = player.DrawRectangle;
+                camera.Shake(2, 2);
             }
 
             if (keyboardState.IsKeyDown(Keys.A))
@@ -123,7 +131,7 @@ namespace BulletHell
 
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouseState.LeftButton == ButtonState.Released)
             {
-                Tile t = level.Tiles[mouseState.X / Tile.Size + mouseState.Y / Tile.Size * level.Width];
+                Tile t = level.GetTile(mouseState.X / Tile.Size, mouseState.Y / Tile.Size);
                 if (t.Color != Color.Red)
                 {
                     t.SwapColor(Color.Red);
@@ -147,7 +155,8 @@ namespace BulletHell
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            //spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, SamplerState.PointClamp, null, null, null, camera.Transform);
             level.Draw(spriteBatch);
             spriteBatch.End();
 
