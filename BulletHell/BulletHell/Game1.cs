@@ -57,7 +57,7 @@ namespace BulletHell
             //player.Position = new Vector2(GraphicsDevice.Viewport.Width - player.Width / 2,
             //    GraphicsDevice.Viewport.Height / 2 - player.Height / 2);
 
-            player.Position = new Vector2(3 * Tile.Size + (player.Width / 2) - 16, 3 * Tile.Size - (player.Height / 2) + 32);
+            player.Position = new Vector2(3 * Tile.Size + (player.Width / 2) - 16, 3 * Tile.Size - (player.Height / 2) + Tile.Size / 2);
 
             camera = new Camera(this);
             camera.Focus = player;

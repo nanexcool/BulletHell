@@ -75,7 +75,7 @@ namespace BulletHell.Engine
                 e.Color = Color.Brown;
                 e.Position = new Vector2(200, 100);
                 e.Target = Entities[0];
-                AddEntity(e);
+                //AddEntity(e);
             }
 
             for (int i = 0; i < Entities.Count; i++)
