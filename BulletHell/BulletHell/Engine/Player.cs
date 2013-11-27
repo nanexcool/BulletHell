@@ -14,7 +14,7 @@ namespace BulletHell.Engine
             : base(texture)
         {
             Width = 48;
-            Height = 96;
+            Height = 80;
 
             XOffset = (texture.Width - Width) / 2;
             YOffset = (texture.Height - Height) / 2;

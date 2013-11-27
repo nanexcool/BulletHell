@@ -16,7 +16,7 @@ namespace BulletHell.Engine
             : base(texture)
         {
             Width = 48;
-            Height = 96;
+            Height = 80;
 
             XOffset = (texture.Width - Width) / 2;
             YOffset = (texture.Height - Height) / 2;
@@ -26,9 +26,18 @@ namespace BulletHell.Engine
         {
             if (Target != null)
             {
-                Vector2 target = Target.Position - Position;
+                Vector2 target = Target.Position - position;
                 target.Normalize();
-                Velocity = target * 100;
+                velocity = target * 100;
+
+                if (!canMoveHorizontal)
+                {
+                    velocity.Y = velocity.X;
+                }
+                if (!canMoveVertical)
+                {
+                    velocity.X = velocity.Y;
+                }
             }
 
             base.Update(elapsed);

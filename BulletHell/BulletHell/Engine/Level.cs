@@ -120,6 +120,16 @@ namespace BulletHell.Engine
                 }
             }
 
+            // Draw grid
+            for (int y = y1; y < y2; y++)
+            {
+                for (int x = x1; x < x2; x++)
+                {
+                    spriteBatch.Draw(Util.Texture, new Rectangle(x * Tile.Size, y * Tile.Size, 1, 480), Color.Black);
+                    spriteBatch.Draw(Util.Texture, new Rectangle(x * Tile.Size, y * Tile.Size, 800, 1), Color.Black);
+                }
+            }
+
             foreach (Entity e in Entities)
             {
                 e.Draw(spriteBatch);
