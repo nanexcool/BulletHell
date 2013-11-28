@@ -68,14 +68,27 @@ namespace BulletHell.Engine
         {
             enemyTimer += elapsed;
 
-            if (enemyTimer > 5 && Util.NextDouble() < elapsed)
+            if (enemyTimer > 1 && Util.NextDouble() < elapsed)
             {
                 enemyTimer = 0;
-                Enemy e = new Enemy(Util.OctoTexture);
-                e.Color = Color.Brown;
-                e.Position = new Vector2(200, 100);
+                Enemy e;
+                if (Util.NextDouble() > 0.99)
+                {
+                    e = new Enemy(Util.OctoTexture);
+                    e.Color = Color.Brown;
+                    e.Position = new Vector2(200, 100);
+                }
+                else
+                {
+                    e = new SquareEnemy();
+                    int x = 2 * Tile.Size + (e.Width / 2);
+                    int y = 2 * Tile.Size + (e.Height / 2);
+                    e.Position = new Vector2(x, y);
+                }
+                
+                
                 e.Target = Entities[0];
-                //AddEntity(e);
+                AddEntity(e);
             }
 
             for (int i = 0; i < Entities.Count; i++)
