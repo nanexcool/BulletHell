@@ -12,12 +12,15 @@ namespace BulletHell.Engine
     {
         public Camera Camera { get; set; }
 
+        public Pathfinder Pathfinder { get; private set; }
+
         public int Width { get; set; }
         public int Height { get; set; }
 
         public Tile[] Tiles { get; set; }
 
         public List<Entity> Entities { get; set; }
+        public Player Player { get; set; }
 
         private float enemyTimer = 0;
 
@@ -39,12 +42,14 @@ namespace BulletHell.Engine
                     {
                         Tiles[x + y * Width].Color = Color.Red;
                     }
-                    else if (Util.NextDouble() < 0.05)
+                    else if (Util.NextDouble() < 0.1)
                     {
                         Tiles[x + y * Width].Color = Color.Red;
                     }
                 }
             }
+
+            Pathfinder = new Pathfinder(this);
 
             Entities = new List<Entity>();
         }
@@ -64,31 +69,40 @@ namespace BulletHell.Engine
             return Tiles[x + y * Width];
         }
 
+        public void AddEnemy()
+        {
+            Enemy e;
+            if (Util.NextDouble() > 0.5)
+            {
+                e = new Enemy(Util.OctoTexture);
+                e.Color = Color.Brown;
+            }
+            else
+            {
+                e = new SquareEnemy();
+            }
+
+            int x = Util.Next(1, Width);
+            int y = Util.Next(1, Height);
+
+            // Only add enemy if not on solid tile
+            if (!GetTile(x, y).IsSolid())
+            {
+                e.Position = new Vector2(x * Tile.Size, y * Tile.Size);
+                e.Path = Pathfinder.FindPath(new Point(e.X / Tile.Size, e.Y / Tile.Size), new Point(Player.X / Tile.Size, Player.Y / Tile.Size));
+                e.Target = Player;
+                AddEntity(e);
+            }
+        }
+
         public virtual void Update(float elapsed)
         {
             enemyTimer += elapsed;
 
-            if (enemyTimer > 1 && Util.NextDouble() < elapsed)
+            if (enemyTimer > 3 && Util.NextDouble() < elapsed)
             {
                 enemyTimer = 0;
-                Enemy e;
-                if (Util.NextDouble() > 0.99)
-                {
-                    e = new Enemy(Util.OctoTexture);
-                    e.Color = Color.Brown;
-                    e.Position = new Vector2(200, 100);
-                }
-                else
-                {
-                    e = new SquareEnemy();
-                    int x = 2 * Tile.Size + (e.Width / 2);
-                    int y = 2 * Tile.Size + (e.Height / 2);
-                    e.Position = new Vector2(x, y);
-                }
-                
-                
-                e.Target = Entities[0];
-                AddEntity(e);
+                //AddEnemy();
             }
 
             for (int i = 0; i < Entities.Count; i++)
@@ -130,14 +144,8 @@ namespace BulletHell.Engine
                 for (int x = x1; x < x2; x++)
                 {
                     spriteBatch.Draw(Util.Texture, new Rectangle(x * Tile.Size, y * Tile.Size, Tile.Size, Tile.Size), GetTile(x, y).Color);
-                }
-            }
 
-            // Draw grid
-            for (int y = y1; y < y2; y++)
-            {
-                for (int x = x1; x < x2; x++)
-                {
+                    // Draw Grid
                     spriteBatch.Draw(Util.Texture, new Rectangle(x * Tile.Size, y * Tile.Size, 1, 480), Color.Black);
                     spriteBatch.Draw(Util.Texture, new Rectangle(x * Tile.Size, y * Tile.Size, 800, 1), Color.Black);
                 }

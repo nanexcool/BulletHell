@@ -178,18 +178,7 @@ namespace BulletHell.Engine
             
             spriteBatch.Draw(Texture, new Vector2(position.X - XOffset, position.Y - YOffset), Color);
             
-            spriteBatch.Draw(Util.Texture, drawRect, Color.Blue * 0.5f);
-
-            //int x1 = X / Tile.Size;
-            //int x2 = (drawRect.Right - 1) / Tile.Size;
-            //int y1 = Y / Tile.Size;
-            //int y2 = (drawRect.Bottom - 1) / Tile.Size;
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(Width / 2 + " " + Height / 2);
-            //sb.AppendLine(string.Format("X:{0},{1} Y:{2},{3}", x1, x2, y1, y2));
-            //sb.AppendLine(drawRect.ToString());
-            //spriteBatch.DrawString(Util.Font, sb, new Vector2(drawRect.Left, drawRect.Bottom), Color.Blue);
+            //spriteBatch.Draw(Util.Texture, drawRect, Color.Blue * 0.5f);
         }
     }
 }

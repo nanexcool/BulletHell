@@ -35,5 +35,10 @@ namespace BulletHell.Engine
         {
             return (float)random.NextDouble();
         }
+
+        public static int Next(int min, int max)
+        {
+            return random.Next(min, max);
+        }
     }
 }

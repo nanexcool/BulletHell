@@ -22,7 +22,7 @@ namespace BulletHell.Engine
 
         public override void Update(float elapsed)
         {
-            //base.Update(elapsed);
+            base.Update(elapsed);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -31,7 +31,7 @@ namespace BulletHell.Engine
 
             spriteBatch.Draw(Texture, new Rectangle((int)position.X - XOffset, (int)position.Y - YOffset, Width, Height), Color);
 
-            spriteBatch.Draw(Util.Texture, drawRect, Color.Blue * 0.5f);
+            base.Draw(spriteBatch);
         }
     }
 }

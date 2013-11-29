@@ -51,8 +51,9 @@ namespace BulletHell
 
             player = new Player(Content.Load<Texture2D>("Octocat"));
             
-            level = new Level(25, 20);
+            level = new Level(20, 15);
             level.AddEntity(player);
+            level.Player = player;
 
             //player.Position = new Vector2(GraphicsDevice.Viewport.Width - player.Width / 2,
             //    GraphicsDevice.Viewport.Height / 2 - player.Height / 2);
@@ -109,9 +110,10 @@ namespace BulletHell
 
             player.Velocity = Vector2.Zero;
 
-            if (keyboardState.IsKeyDown(Keys.Space))
+            if (keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
             {
-                camera.Shake(5, 2);
+                camera.Shake(5, 3);
+                level.AddEnemy();
             }
 
             if (keyboardState.IsKeyDown(Keys.A))
