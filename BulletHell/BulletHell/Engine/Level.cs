@@ -22,12 +22,16 @@ namespace BulletHell.Engine
         public List<Entity> Entities { get; set; }
         public Player Player { get; set; }
 
+        public int NumberOfEnemies { get; set; }
+
         private float enemyTimer = 0;
 
-        public Level(int width, int height)
+        public Level(int width, int height, int enemies)
         {
             Width = width;
             Height = height;
+
+            NumberOfEnemies = enemies;
 
             Tiles = new Tile[width * height];
 
@@ -52,6 +56,22 @@ namespace BulletHell.Engine
             Pathfinder = new Pathfinder(this);
 
             Entities = new List<Entity>();
+
+            
+        }
+
+        public void Initialize()
+        {
+            for (int i = 0; i < NumberOfEnemies; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    if (AddEnemy())
+                    {
+                        break;
+                    }
+                }
+            }
         }
 
         public void AddEntity(Entity e)
@@ -69,7 +89,7 @@ namespace BulletHell.Engine
             return Tiles[x + y * Width];
         }
 
-        public void AddEnemy()
+        public bool AddEnemy()
         {
             Enemy e;
             if (Util.NextDouble() > 0.5)
@@ -92,7 +112,9 @@ namespace BulletHell.Engine
                 e.Path = Pathfinder.FindPath(new Point(e.X / Tile.Size, e.Y / Tile.Size), new Point(Player.X / Tile.Size, Player.Y / Tile.Size));
                 e.Target = Player;
                 AddEntity(e);
+                return true;
             }
+            return false;
         }
 
         public virtual void Update(float elapsed)
@@ -111,6 +133,10 @@ namespace BulletHell.Engine
                 
                 if (Entities[i].CanRemove)
                 {
+                    if (Entities[i] is Enemy)
+                    {
+                        NumberOfEnemies--;
+                    }
                     Entities.RemoveAt(i);
                     i--;
                 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -27,8 +28,12 @@ namespace BulletHell
         GameMode mode = GameMode.Menu;
         Texture2D titleTexture;
 
+        StringBuilder sb = new StringBuilder();
+
         Level level;
         int levelNumber = 1;
+        int width = 20;
+        int height = 11;
 
         Player player;
         Camera camera;
@@ -57,20 +62,27 @@ namespace BulletHell
             titleTexture = Content.Load<Texture2D>("title");
 
             player = new Player(Content.Load<Texture2D>("Octocat"));
-            
-            level = new Level(20, 11);
+
+            NewLevel(width, height, 3);
+
+            base.Initialize();
+        }
+
+        public void NewLevel(int width, int height, int enemies)
+        {
+            level = new Level(width, height, levelNumber + 2);
             level.AddEntity(player);
             level.Player = player;
 
             player.Position = new Vector2(3 * Tile.Size + (player.Width / 2) - 16, 3 * Tile.Size - (player.Height / 2) + Tile.Size / 2);
-
+            player.Bullets.Clear();
             camera = new Camera(this);
             camera.Focus = player;
             camera.Bounds = new Rectangle(0, 0, level.Width * Tile.Size, level.Height * Tile.Size);
 
             level.Camera = camera;
+            level.Initialize();
 
-            base.Initialize();
         }
 
         /// <summary>
@@ -177,7 +189,13 @@ namespace BulletHell
                     }
 
                     level.Update(elapsed);
-
+                    if (level.NumberOfEnemies == 0)
+                    {
+                        width += 2;
+                        height += 2;
+                        levelNumber++;
+                        NewLevel(width, height, levelNumber + 2);
+                    }
                     break;
                 case GameMode.End:
                     break;
@@ -214,7 +232,10 @@ namespace BulletHell
                     spriteBatch.End();
                     // HUD
                     spriteBatch.Begin();
-                    spriteBatch.DrawString(Util.Font, level.Entities.Count.ToString(), Vector2.Zero, Color.Purple);
+                    sb.Clear();
+                    sb.AppendLine("Level: " + levelNumber);
+                    sb.AppendLine("Enemies left: " + level.NumberOfEnemies);
+                    spriteBatch.DrawString(Util.Font, sb, Vector2.Zero, Color.Purple);
                     spriteBatch.End();
                     break;
                 case GameMode.End:

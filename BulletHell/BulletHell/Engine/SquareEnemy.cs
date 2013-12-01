@@ -18,6 +18,10 @@ namespace BulletHell.Engine
 
             XOffset = 0;
             YOffset = 0;
+
+            CanFly = true;
+
+            Speed = Util.Next(50, 100);
         }
 
         public override void Update(float elapsed)

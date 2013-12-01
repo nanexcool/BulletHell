@@ -36,35 +36,44 @@ namespace BulletHell.Engine
         {
             if (Target != null)
             {
-                pathElapsed += elapsed;
-                if (pathElapsed >= pathTimeToCheck)
+                if (!CanFly)
                 {
-                    Path.Clear();
-                    Path = Level.Pathfinder.FindPath(new Point(X / Tile.Size, Y / Tile.Size), new Point(Target.X / Tile.Size, Target.Y / Tile.Size));
-                    pathElapsed -= pathTimeToCheck;
-                }
-
-                if (Path.Count > 0)
-                {
-                    float distance = Vector2.Distance(Path[0], position);
-                    if (distance < 5)
+                    pathElapsed += elapsed;
+                    if (pathElapsed >= pathTimeToCheck)
                     {
-                        Path.RemoveAt(0);
-                        if (Path.Count == 0)
+                        Path.Clear();
+                        Path = Level.Pathfinder.FindPath(new Point(X / Tile.Size, Y / Tile.Size), new Point(Target.X / Tile.Size, Target.Y / Tile.Size));
+                        pathElapsed -= pathTimeToCheck;
+                    }
+
+                    if (Path.Count > 0)
+                    {
+                        float distance = Vector2.Distance(Path[0], position);
+                        if (distance < 5)
                         {
-                            velocity = Vector2.Zero;
+                            Path.RemoveAt(0);
+                            if (Path.Count == 0)
+                            {
+                                velocity = Vector2.Zero;
+                            }
+                        }
+                        else
+                        {
+                            Vector2 target = Path[0] - position;
+                            target.Normalize();
+                            velocity = target * Speed;
                         }
                     }
                     else
                     {
-                        Vector2 target = Path[0] - position;
-                        target.Normalize();
-                        velocity = target * Speed;
+                        velocity = Vector2.Zero;
                     }
                 }
                 else
                 {
-                    velocity = Vector2.Zero;
+                    Vector2 target = Target.Position - position;
+                    target.Normalize();
+                    velocity = target * Speed;
                 }
                 
             }

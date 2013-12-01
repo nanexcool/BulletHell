@@ -39,6 +39,8 @@ namespace BulletHell.Engine
         protected bool canMoveHorizontal = true;
         protected bool canMoveVertical = true;
 
+        public bool CanFly { get; set; }
+
         public Rectangle DrawRectangle
         {
             get
@@ -51,7 +53,7 @@ namespace BulletHell.Engine
         {
             get
             {
-                return new Rectangle(X - XOffset, Y - YOffset, Width + XOffset, Height + YOffset);
+                return new Rectangle(X - XOffset, Y - YOffset, Width + XOffset * 2, Height + YOffset * 2);
             }
         }
 
@@ -68,6 +70,8 @@ namespace BulletHell.Engine
             Width = texture.Width;
             Height = texture.Height;
             Color = Color.White;
+
+            CanFly = false;
             
             CanRemove = false;
         }
@@ -88,83 +92,86 @@ namespace BulletHell.Engine
             canMoveHorizontal = true;
             canMoveVertical = true;
 
-            // Moving LEFT
-            if (velocity.X < 0)
+            if (!CanFly)
             {
-                wantedPosition.X += velocity.X * elapsed;
-
-                int x1 = (int)(wantedPosition.X / Tile.Size);
-                int x2 = (int)((wantedPosition.X + Width) / Tile.Size);
-                int y1 = (int)(wantedPosition.Y / Tile.Size);
-                int y2 = (int)((wantedPosition.Y + Height) / Tile.Size);
-
-                for (int y = y1; y <= y2; y++)
+                // Moving LEFT
+                if (velocity.X < 0)
                 {
-                    if (Level.GetTile(x1, y).IsSolid())
+                    wantedPosition.X += velocity.X * elapsed;
+
+                    int x1 = (int)(wantedPosition.X / Tile.Size);
+                    int x2 = (int)((wantedPosition.X + Width) / Tile.Size);
+                    int y1 = (int)(wantedPosition.Y / Tile.Size);
+                    int y2 = (int)((wantedPosition.Y + Height) / Tile.Size);
+
+                    for (int y = y1; y <= y2; y++)
                     {
-                        canMoveHorizontal = false;
-                        velocity.X = 0;
+                        if (Level.GetTile(x1, y).IsSolid())
+                        {
+                            canMoveHorizontal = false;
+                            velocity.X = 0;
+                        }
                     }
                 }
-            }
-            // Moving RIGHT
-            if (velocity.X > 0)
-            {
-                wantedPosition.X += velocity.X * elapsed;
-
-                int x1 = (int)(wantedPosition.X / Tile.Size);
-                int x2 = (int)((wantedPosition.X + Width) / Tile.Size);
-                int y1 = (int)(wantedPosition.Y / Tile.Size);
-                int y2 = (int)((wantedPosition.Y + Height) / Tile.Size);
-
-                for (int y = y1; y <= y2; y++)
+                // Moving RIGHT
+                if (velocity.X > 0)
                 {
-                    if (Level.GetTile(x2, y).IsSolid())
+                    wantedPosition.X += velocity.X * elapsed;
+
+                    int x1 = (int)(wantedPosition.X / Tile.Size);
+                    int x2 = (int)((wantedPosition.X + Width) / Tile.Size);
+                    int y1 = (int)(wantedPosition.Y / Tile.Size);
+                    int y2 = (int)((wantedPosition.Y + Height) / Tile.Size);
+
+                    for (int y = y1; y <= y2; y++)
                     {
-                        canMoveHorizontal = false;
-                        velocity.X = 0;
+                        if (Level.GetTile(x2, y).IsSolid())
+                        {
+                            canMoveHorizontal = false;
+                            velocity.X = 0;
+                        }
                     }
                 }
-            }
 
-            // reset X position
-            wantedPosition.X = position.X;
+                // reset X position
+                wantedPosition.X = position.X;
 
-            // Moving UP
-            if (velocity.Y < 0)
-            {
-                wantedPosition.Y += velocity.Y * elapsed;
-
-                int x1 = (int)(wantedPosition.X / Tile.Size);
-                int x2 = (int)((wantedPosition.X + Width) / Tile.Size);
-                int y1 = (int)(wantedPosition.Y / Tile.Size);
-                int y2 = (int)((wantedPosition.Y + Height) / Tile.Size);
-
-                for (int x = x1; x <= x2; x++)
+                // Moving UP
+                if (velocity.Y < 0)
                 {
-                    if (Level.GetTile(x, y1).IsSolid())
+                    wantedPosition.Y += velocity.Y * elapsed;
+
+                    int x1 = (int)(wantedPosition.X / Tile.Size);
+                    int x2 = (int)((wantedPosition.X + Width) / Tile.Size);
+                    int y1 = (int)(wantedPosition.Y / Tile.Size);
+                    int y2 = (int)((wantedPosition.Y + Height) / Tile.Size);
+
+                    for (int x = x1; x <= x2; x++)
                     {
-                        canMoveVertical = false;
-                        velocity.Y = 0;
+                        if (Level.GetTile(x, y1).IsSolid())
+                        {
+                            canMoveVertical = false;
+                            velocity.Y = 0;
+                        }
                     }
                 }
-            }
-            // Moving DOWN
-            if (velocity.Y > 0)
-            {
-                wantedPosition.Y += velocity.Y * elapsed;
-
-                int x1 = (int)(wantedPosition.X / Tile.Size);
-                int x2 = (int)((wantedPosition.X + Width) / Tile.Size);
-                int y1 = (int)(wantedPosition.Y / Tile.Size);
-                int y2 = (int)((wantedPosition.Y + Height) / Tile.Size);
-
-                for (int x = x1; x <= x2; x++)
+                // Moving DOWN
+                if (velocity.Y > 0)
                 {
-                    if (Level.GetTile(x, y2).IsSolid())
+                    wantedPosition.Y += velocity.Y * elapsed;
+
+                    int x1 = (int)(wantedPosition.X / Tile.Size);
+                    int x2 = (int)((wantedPosition.X + Width) / Tile.Size);
+                    int y1 = (int)(wantedPosition.Y / Tile.Size);
+                    int y2 = (int)((wantedPosition.Y + Height) / Tile.Size);
+
+                    for (int x = x1; x <= x2; x++)
                     {
-                        canMoveVertical = false;
-                        velocity.Y = 0;
+                        if (Level.GetTile(x, y2).IsSolid())
+                        {
+                            canMoveVertical = false;
+                            velocity.Y = 0;
+                        }
                     }
                 }
             }
@@ -186,7 +193,7 @@ namespace BulletHell.Engine
             
             spriteBatch.Draw(Texture, new Vector2(position.X - XOffset, position.Y - YOffset), Color);
             
-            //spriteBatch.Draw(Util.Texture, drawRect, Color.Blue * 0.5f);
+            //spriteBatch.Draw(Util.Texture, CollisionBox, Color.Blue * 0.5f);
         }
     }
 }

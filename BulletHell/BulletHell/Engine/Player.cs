@@ -20,12 +20,12 @@ namespace BulletHell.Engine
             : base(texture)
         {
             Width = 48;
-            Height = 80;
+            Height = 60;
 
             XOffset = (texture.Width - Width) / 2;
             YOffset = (texture.Height - Height) / 2;
 
-            ShootDelay = 0.5f;
+            ShootDelay = 0.2f;
 
             Bullets = new List<Bullet>();
         }

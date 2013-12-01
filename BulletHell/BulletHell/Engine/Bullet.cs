@@ -8,37 +8,25 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BulletHell.Engine
 {
-    public class Bullet
+    public class Bullet : Entity
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
-
-        public int X { get { return (int)Math.Floor(Position.X); } }
-        public int Y { get { return (int)Math.Floor(Position.Y); } }
-
-        public Rectangle CollisionBox
-        {
-            get
-            {
-                return new Rectangle(X, Y, Width, Height);
-            }
-        }
-
-        public Vector2 Position { get; set; }
-        public Vector2 Velocity { get; set; }
-
-        public Color Color { get; set; }
+        float life = 0;
 
         public float Speed { get; set; }
 
         public bool IsActive { get; set; }
 
-        public Bullet()
+        public float TimeToLive { get; set; }
+
+        public Bullet() 
+            : base(Util.Texture)
         {
             Width = 16;
             Height = 16;
 
             Speed = 500;
+
+            TimeToLive = 0.8f;
 
             Color = Color.Aqua;
 
@@ -54,12 +42,18 @@ namespace BulletHell.Engine
             }
         }
 
-        public void Update(float elapsed)
+        public override void Update(float elapsed)
         {
             Position += Velocity * Speed * elapsed;
+            life += elapsed;
+
+            if (life >= TimeToLive)
+            {
+                IsActive = false;
+            }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Util.Texture, CollisionBox, new Rectangle(0, 0, Width, Height), Color);
         }
