@@ -24,6 +24,9 @@ namespace BulletHell
         KeyboardState oldKeyboardState, keyboardState;
         MouseState oldmouseState, mouseState;
 
+        GameMode mode = GameMode.Menu;
+        Texture2D titleTexture;
+
         Level level;
         Player player;
         Camera camera;
@@ -33,8 +36,8 @@ namespace BulletHell
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            //graphics.PreferredBackBufferWidth = 1280;
-            //graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
 
             IsMouseVisible = true;
         }
@@ -49,14 +52,13 @@ namespace BulletHell
         {
             Util.Initialize(this);
 
+            titleTexture = Content.Load<Texture2D>("title");
+
             player = new Player(Content.Load<Texture2D>("Octocat"));
             
-            level = new Level(20, 15);
+            level = new Level(25, 15);
             level.AddEntity(player);
             level.Player = player;
-
-            //player.Position = new Vector2(GraphicsDevice.Viewport.Width - player.Width / 2,
-            //    GraphicsDevice.Viewport.Height / 2 - player.Height / 2);
 
             player.Position = new Vector2(3 * Tile.Size + (player.Width / 2) - 16, 3 * Tile.Size - (player.Height / 2) + Tile.Size / 2);
 
@@ -105,35 +107,67 @@ namespace BulletHell
             oldmouseState = mouseState;
             mouseState =Mouse.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Escape))
-                this.Exit();
+            switch (mode)
+            {
+                case GameMode.Menu:
+                    if (keyboardState.IsKeyDown(Keys.Escape) && oldKeyboardState.IsKeyUp(Keys.Escape))
+                        this.Exit();
+                    if (keyboardState.GetPressedKeys().Length > 0 && keyboardState.IsKeyUp(Keys.Escape))
+                        mode = GameMode.Gameplay;
+                    break;
+                case GameMode.Gameplay:
+                    if (keyboardState.IsKeyDown(Keys.Escape) && oldKeyboardState.IsKeyUp(Keys.Escape))
+                    {
+                        mode = GameMode.Menu;
+                        break;
+                    }
+                        
+                    player.Velocity = Vector2.Zero;
 
-            player.Velocity = Vector2.Zero;
+                    if (keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
+                    {
+                        //camera.Shake(5, 3);
+                        level.AddEnemy();
+                        for (int i = 0; i < level.Tiles.Length; i++)
+                        {
+                            if (level.Tiles[i].Color == Color.Black)
+                            {
+                                level.Tiles[i].Color = Color.SaddleBrown;
+                            }
+                            else
+                            {
+                                level.Tiles[i].Color = Color.Black;
+                            }
+                        }
+                    }
 
-            if (keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
-            {
-                camera.Shake(5, 3);
-                level.AddEnemy();
+                    if (keyboardState.IsKeyDown(Keys.A))
+                    {
+                        player.Velocity = new Vector2(-300, player.Velocity.Y);
+                    }
+                    else if (keyboardState.IsKeyDown(Keys.E))
+                    {
+                        player.Velocity = new Vector2(300, player.Velocity.Y);
+                    }
+                    if (keyboardState.IsKeyDown(Keys.OemComma))
+                    {
+                        player.Velocity = new Vector2(player.Velocity.X, -300);
+                    }
+                    else if (keyboardState.IsKeyDown(Keys.O))
+                    {
+                        player.Velocity = new Vector2(player.Velocity.X, 300);
+                    }
+
+                    level.Update(elapsed);
+
+                    break;
+                case GameMode.End:
+                    break;
+                default:
+                    break;
             }
 
-            if (keyboardState.IsKeyDown(Keys.A))
-            {
-                player.Velocity = new Vector2(-300, player.Velocity.Y);
-            }
-            else if (keyboardState.IsKeyDown(Keys.E))
-            {
-                player.Velocity = new Vector2(300, player.Velocity.Y);
-            }
-            if (keyboardState.IsKeyDown(Keys.OemComma))
-            {
-                player.Velocity = new Vector2(player.Velocity.X, -300);
-            }
-            else if (keyboardState.IsKeyDown(Keys.O))
-            {
-                player.Velocity = new Vector2(player.Velocity.X, 300);
-            }
-
-            level.Update(elapsed);
+            
 
             base.Update(gameTime);
         }
@@ -147,9 +181,28 @@ namespace BulletHell
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //spriteBatch.Begin();
-            spriteBatch.Begin(SpriteSortMode.Immediate, null, SamplerState.PointClamp, null, null, null, camera.Transform);
-            level.Draw(spriteBatch);
-            spriteBatch.End();
+            
+
+            switch (mode)
+            {
+                case GameMode.Menu:
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(titleTexture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    spriteBatch.End();
+                    break;
+                case GameMode.Gameplay:
+                    spriteBatch.Begin(SpriteSortMode.Immediate, null, SamplerState.PointClamp, null, null, null, camera.Transform);
+                    level.Draw(spriteBatch);
+                    spriteBatch.End();
+                    break;
+                case GameMode.End:
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(titleTexture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    spriteBatch.End();
+                    break;
+                default:
+                    break;
+            }
 
             base.Draw(gameTime);
         }

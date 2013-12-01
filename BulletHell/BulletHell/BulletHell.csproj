@@ -75,6 +75,7 @@
     <Compile Include="Engine\Camera.cs" />
     <Compile Include="Engine\Enemy.cs" />
     <Compile Include="Engine\Entity.cs" />
+    <Compile Include="Engine\GameMode.cs" />
     <Compile Include="Engine\Level.cs" />
     <Compile Include="Engine\Pathfinder.cs" />
     <Compile Include="Engine\Player.cs" />

@@ -184,6 +184,11 @@ namespace BulletHell.Engine
             SearchNode startNode = searchNodes[startPoint.X + startPoint.Y * Width];
             SearchNode endNode = searchNodes[endPoint.X + endPoint.Y * Width];
 
+            if (startNode == null || endNode == null)
+            {
+                return new List<Vector2>();
+            }
+
             startNode.InOpenList = true;
 
             startNode.DistanceToGoal = Heuristic(startPoint, endPoint);

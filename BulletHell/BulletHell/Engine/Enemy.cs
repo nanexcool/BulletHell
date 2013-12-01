@@ -47,7 +47,7 @@ namespace BulletHell.Engine
                 if (Path.Count > 0)
                 {
                     float distance = Vector2.Distance(Path[0], position);
-                    if (distance < 1)
+                    if (distance < 5)
                     {
                         Path.RemoveAt(0);
                         if (Path.Count == 0)
@@ -76,9 +76,9 @@ namespace BulletHell.Engine
         {
             base.Draw(spriteBatch);
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(Path.Count.ToString());
-            spriteBatch.DrawString(Util.Font, sb, new Vector2(DrawRectangle.Left, DrawRectangle.Bottom), Color.Blue);
+            //StringBuilder sb = new StringBuilder();
+            //sb.AppendLine(Path.Count.ToString());
+            //spriteBatch.DrawString(Util.Font, sb, new Vector2(DrawRectangle.Left, DrawRectangle.Bottom), Color.Blue);
         }
     }
 }

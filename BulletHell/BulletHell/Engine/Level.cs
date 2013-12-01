@@ -40,11 +40,11 @@ namespace BulletHell.Engine
                     Tiles[x + y * Width].Color = Color.SaddleBrown;
                     if (x % Width == 0 || y % Height == 0 || x == Width -1 || y == Height - 1)
                     {
-                        Tiles[x + y * Width].Color = Color.Red;
+                        Tiles[x + y * Width].Color = Color.Black;
                     }
                     else if (Util.NextDouble() < 0.1)
                     {
-                        Tiles[x + y * Width].Color = Color.Red;
+                        Tiles[x + y * Width].Color = Color.Black;
                     }
                 }
             }
