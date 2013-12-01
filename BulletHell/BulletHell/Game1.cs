@@ -28,6 +28,8 @@ namespace BulletHell
         Texture2D titleTexture;
 
         Level level;
+        int levelNumber = 1;
+
         Player player;
         Camera camera;
 
@@ -56,7 +58,7 @@ namespace BulletHell
 
             player = new Player(Content.Load<Texture2D>("Octocat"));
             
-            level = new Level(25, 15);
+            level = new Level(20, 11);
             level.AddEntity(player);
             level.Player = player;
 
@@ -209,6 +211,10 @@ namespace BulletHell
                 case GameMode.Gameplay:
                     spriteBatch.Begin(SpriteSortMode.Immediate, null, SamplerState.PointClamp, null, null, null, camera.Transform);
                     level.Draw(spriteBatch);
+                    spriteBatch.End();
+                    // HUD
+                    spriteBatch.Begin();
+                    spriteBatch.DrawString(Util.Font, level.Entities.Count.ToString(), Vector2.Zero, Color.Purple);
                     spriteBatch.End();
                     break;
                 case GameMode.End:

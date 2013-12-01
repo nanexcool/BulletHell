@@ -81,6 +81,7 @@
     <Compile Include="Engine\Level.cs" />
     <Compile Include="Engine\Pathfinder.cs" />
     <Compile Include="Engine\Player.cs" />
+    <Compile Include="Engine\PowerUp.cs" />
     <Compile Include="Engine\SquareEnemy.cs" />
     <Compile Include="Engine\Tile.cs" />
     <Compile Include="Engine\Util.cs" />
