@@ -145,9 +145,6 @@ namespace BulletHell.Engine
                 {
                     spriteBatch.Draw(Util.Texture, new Rectangle(x * Tile.Size, y * Tile.Size, Tile.Size, Tile.Size), GetTile(x, y).Color);
 
-                    // Draw Grid
-                    spriteBatch.Draw(Util.Texture, new Rectangle(x * Tile.Size, y * Tile.Size, 1, 480), Color.Black);
-                    spriteBatch.Draw(Util.Texture, new Rectangle(x * Tile.Size, y * Tile.Size, 800, 1), Color.Black);
                 }
             }
 

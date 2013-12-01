@@ -157,6 +157,22 @@ namespace BulletHell
                     {
                         player.Velocity = new Vector2(player.Velocity.X, 300);
                     }
+                    if (keyboardState.IsKeyDown(Keys.Left))
+                    {
+                        player.Shoot(Direction.Left);
+                    }
+                    if (keyboardState.IsKeyDown(Keys.Right))
+                    {
+                        player.Shoot(Direction.Right);
+                    }
+                    if (keyboardState.IsKeyDown(Keys.Up))
+                    {
+                        player.Shoot(Direction.Up);
+                    }
+                    if (keyboardState.IsKeyDown(Keys.Down))
+                    {
+                        player.Shoot(Direction.Down);
+                    }
 
                     level.Update(elapsed);
 

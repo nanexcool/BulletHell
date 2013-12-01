@@ -47,6 +47,14 @@ namespace BulletHell.Engine
             }
         }
 
+        public Rectangle CollisionBox
+        {
+            get
+            {
+                return new Rectangle(X - XOffset, Y - YOffset, Width + XOffset, Height + YOffset);
+            }
+        }
+
         public Texture2D Texture { get; set; }
         public Color Color { get; set; }
 

@@ -5,11 +5,11 @@ using System.Text;
 
 namespace BulletHell.Engine
 {
-    public enum GameMode
+    public enum Direction
     {
-        Menu,
-        Gameplay,
-        Pause,
-        End
+        Left,
+        Right,
+        Up,
+        Down
     }
 }

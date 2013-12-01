@@ -72,7 +72,9 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\Bullet.cs" />
     <Compile Include="Engine\Camera.cs" />
+    <Compile Include="Engine\Direction.cs" />
     <Compile Include="Engine\Enemy.cs" />
     <Compile Include="Engine\Entity.cs" />
     <Compile Include="Engine\GameMode.cs" />
